@@ -7,13 +7,14 @@ from langchain.prompts import PromptTemplate
 import logging
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores.pgvector import PGVector
-from langchain.schema import StrOutputParser, RunnablePassthrough
+from langchain.schema import StrOutputParser
+from langchain.schema.runnable import RunnablePassthrough
 from fastapi import FastAPI, UploadFile, File
 from azure.storage.blob import BlobServiceClient
 import os
 from fastapi import FastAPI, HTTPException
 from langchain.schema import Document
-from langchain.indexes import SQLRecordManager, index, IndexingResult
+from langchain.indexes import SQLRecordManager, index
 
 
 load_dotenv(find_dotenv())
@@ -127,8 +128,8 @@ async def upload_files(files: list[UploadFile] = File(...)):
     return {"uploaded_files": uploaded_files}
 
 
-@app.post("/index_documents/", response_model=IndexingResult)
-async def index_documents(documents: list[Document]) -> IndexingResult:
+@app.post("/index_documents/")
+async def index_documents(documents: list[Document]):
     try:
         result = index(
             documents,

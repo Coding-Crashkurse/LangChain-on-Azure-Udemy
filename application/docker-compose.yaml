@@ -21,9 +21,11 @@ services:
   backend:
     build: ./backend
     ports:
-      - "5000:80"
+      - "5000:5000"
     depends_on:
       - postgres
+    env_file:
+      - ./.env
 
   frontend:
     build: ./frontend
