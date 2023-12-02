@@ -45,16 +45,29 @@
 }
 
 .open-chat-btn {
-  background-color: #007bff;
-  color: white;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: transparent; /* Optional: Hintergrund transparent machen */
   border: none;
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
+  width: 100px; /* Passen Sie die Größe nach Bedarf an */
+  height: 100px; /* Passen Sie die Größe nach Bedarf an */
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
+  padding: 0; /* Entfernen Sie das Padding, falls vorhanden */
+  overflow: hidden; /* Verhindert das Überlaufen des Bildes aus dem Button */
+  border: 5px solid white;
+}
+
+.open-chat-btn:hover {
+  transform: translateY(-3px); /* Bewegt den Button nach oben beim Hovern */
+}
+
+.open-chat-btn img {
+  width: 100%; /* Sorgt dafür, dass das Bild den ganzen Button ausfüllt */
+  height: auto; /* Behält das Seitenverhältnis des Bildes bei */
 }
