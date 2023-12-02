@@ -1,0 +1,14 @@
+<!-- chat-ui.component.html -->
+<div class="chat-ui" *ngIf="isVisible">
+    <div class="chat-header">
+        <h3>Chat</h3>
+        <button (click)="toggleChat()">Close</button>
+    </div>
+    <div class="chat-body">
+        <!-- Chat messages and input can go here -->
+    </div>
+</div>
+
+<button *ngIf="!isVisible" (click)="toggleChat()" class="open-chat-btn">
+    Open Chat
+</button>
