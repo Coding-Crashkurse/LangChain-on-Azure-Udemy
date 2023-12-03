@@ -1,15 +1,26 @@
 <!-- chat-ui.component.html -->
-<div class="chat-ui" *ngIf="isVisible">
-    <div class="chat-header">
-        <h3>Chat</h3>
-        <button (click)="toggleChat()">Close</button>
+<div class="chat-ui" [class.visible]="isVisible">
+    <div *ngIf="isVisible" class="chat-container">
+        <div class="chat-header">
+            <h3>Chat</h3>
+            <button class="close-btn" (click)="toggleChat()">Close</button>
+        </div>
+        <div class="chat-body">
+            <div *ngFor="let message of messages; let i = index" class="message"
+                [class.user-message]="message.sender === 'user'" [class.bot-message]="message.sender === 'bot'">
+                <img *ngIf="message.sender === 'bot'" src="/assets/robot.png" alt="Bot" class="message-icon">
+                <img *ngIf="message.sender === 'user'" src="/assets/user.png" alt="User" class="message-icon">
+                <div class="message-text">{{ message.text }}</div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendUserMessage(); newMessage = ''"
+                placeholder="Type a message...">
+            <button (click)="sendUserMessage(); newMessage = ''">Send</button>
+        </div>
     </div>
-    <div class="chat-body">
-        <!-- Chat messages and input can go here -->
-    </div>
-</div>
 
-<!-- chat-ui.component.html -->
-<button *ngIf="!isVisible" (click)="toggleChat()" class="open-chat-btn">
-    <img src="/assets/robot.png" alt="Open Chat">
-</button>
+    <button (click)="toggleChat()" class="open-chat-btn" *ngIf="!isVisible">
+        <img src="/assets/robot.png" alt="Open Chat">
+    </button>
+</div>

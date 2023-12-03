@@ -1,0 +1,33 @@
+.header-container {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* Semi-transparent white background for readability */
+}
+
+.restaurant-name {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900; /* Extra bold weight for the restaurant name */
+  font-size: 3em; /* Larger font size for prominence */
+  color: #7a2a2a; /* A deep red, reminiscent of Italian wine */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+}
+
+.tagline {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400; /* Regular weight for the tagline */
+  font-size: 1.5em; /* Larger font size for better visibility */
+  color: #555; /* Darker grey for contrast and readability */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+  margin-top: 10px;
+}
+
+.decoration .decorative-icon {
+  width: 70px; /* Decrease the size of the icon */
+  height: auto;
+  margin-top: 10px; /* Add some space above the icon */
+}

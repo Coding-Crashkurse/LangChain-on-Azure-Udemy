@@ -1,40 +1,64 @@
-/* chat-ui.component.css */
 .chat-ui {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  width: 300px;
-  height: 400px;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.chat-ui.visible {
+  flex-direction: column;
+  width: 300px; /* Width for the chat box when visible */
+  height: 400px; /* Height for the chat box when visible */
+  border-radius: 8px; /* Less rounded corners for the chat box */
   background-color: #ffffff;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chat-container {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: all 0.3s ease;
+  height: 100%;
 }
 
 .chat-header {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 15px;
-  font-size: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  padding: 10px;
+  background-color: #333; /* Or any other color you prefer */
+  color: white; /* Ensures text is visible */
 }
 
-.chat-header h3 {
-  margin: 0;
+.open-chat-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  /* The size of the button should be defined here, not in .chat-ui */
+  width: 120px;
+  height: 120px;
 }
 
+.open-chat-btn img {
+  width: 100%; /* Adjust if needed */
+  height: auto;
+  border-radius: 100%;
+}
 .chat-header button {
   background: none;
   border: none;
   color: white;
+  cursor: pointer;
+}
+
+.close-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: white; /* This should make the button visible */
   cursor: pointer;
 }
 
@@ -44,30 +68,38 @@
   overflow-y: auto;
 }
 
-.open-chat-btn {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background-color: transparent; /* Optional: Hintergrund transparent machen */
-  border: none;
-  border-radius: 50%;
-  width: 100px; /* Passen Sie die Größe nach Bedarf an */
-  height: 100px; /* Passen Sie die Größe nach Bedarf an */
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.chat-ui .message-icon {
+  width: 30px; /* Or whatever size you want */
+  height: 30px; /* Or whatever size you want */
+  /* Any other styles you want to apply specifically to the chat icons */
+}
+
+.message {
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 0; /* Entfernen Sie das Padding, falls vorhanden */
-  overflow: hidden; /* Verhindert das Überlaufen des Bildes aus dem Button */
-  border: 5px solid white;
+  margin-bottom: 10px;
 }
 
-.open-chat-btn:hover {
-  transform: translateY(-3px); /* Bewegt den Button nach oben beim Hovern */
+.user-message {
+  justify-content: flex-start;
 }
 
-.open-chat-btn img {
-  width: 100%; /* Sorgt dafür, dass das Bild den ganzen Button ausfüllt */
-  height: auto; /* Behält das Seitenverhältnis des Bildes bei */
+.bot-message {
+  justify-content: flex-end;
+}
+
+.user-message .message-text,
+.bot-message .message-text {
+  background-color: #f1f1f1;
+  border-radius: 15px;
+  padding: 10px 20px;
+  max-width: 80%;
+  margin-left: 10px;
+}
+
+.message-icon.user,
+.message-icon.bot {
+  width: 30px; /* Set a fixed width */
+  height: 30px; /* Set a fixed height */
+  margin-right: 10px; /* Add some spacing between icon and text */
 }
