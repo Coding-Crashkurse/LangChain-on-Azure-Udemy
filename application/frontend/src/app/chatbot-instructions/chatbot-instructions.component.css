@@ -1,15 +1,15 @@
 .chatbot-instructions-container {
   font-family: "Roboto", sans-serif;
   padding: 1em;
-  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   text-align: center;
-  position: relative; /* Position relative to its normal position */
-  z-index: 10; /* Ensure it's above other elements */
+  position: relative;
+  z-index: 10;
 }
 
 .chatbot-instructions-container p {
   margin-bottom: 0.5em;
-  color: #333; /* Dark text for readability */
+  color: #333;
 }

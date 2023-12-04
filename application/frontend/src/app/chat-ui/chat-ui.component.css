@@ -11,9 +11,9 @@
 
 .chat-ui.visible {
   flex-direction: column;
-  width: 300px; /* Width for the chat box when visible */
-  height: 400px; /* Height for the chat box when visible */
-  border-radius: 8px; /* Less rounded corners for the chat box */
+  width: 450px;
+  height: 400px;
+  border-radius: 8px;
   background-color: #ffffff;
   border: 1px solid #ddd;
 }
@@ -22,6 +22,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
 }
 
 .chat-header {
@@ -29,37 +30,30 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #333; /* Or any other color you prefer */
-  color: white; /* Ensures text is visible */
+  background-color: #333;
+  color: white;
 }
 
 .open-chat-btn {
   background: none;
   border: none;
   cursor: pointer;
-  /* The size of the button should be defined here, not in .chat-ui */
   width: 120px;
   height: 120px;
 }
 
 .open-chat-btn img {
-  width: 100%; /* Adjust if needed */
+  width: 100%;
   height: auto;
   border-radius: 100%;
-}
-.chat-header button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
 }
 
 .close-btn {
   margin-left: auto;
   background: none;
   border: none;
-  color: white; /* This should make the button visible */
   cursor: pointer;
+  color: white;
 }
 
 .chat-body {
@@ -69,9 +63,8 @@
 }
 
 .chat-ui .message-icon {
-  width: 30px; /* Or whatever size you want */
-  height: 30px; /* Or whatever size you want */
-  /* Any other styles you want to apply specifically to the chat icons */
+  width: 30px;
+  height: 30px;
 }
 
 .message {
@@ -85,7 +78,7 @@
 }
 
 .bot-message {
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .user-message .message-text,
@@ -99,7 +92,34 @@
 
 .message-icon.user,
 .message-icon.bot {
-  width: 30px; /* Set a fixed width */
-  height: 30px; /* Set a fixed height */
-  margin-right: 10px; /* Add some spacing between icon and text */
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.chat-input input {
+  width: 78%;
+  padding-left: 2%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 2px solid #ccc;
+  font-size: 16px;
+  margin-right: -4px;
+}
+
+.chat-input button {
+  width: 20%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border: none;
+  background-color: #7a2a2a;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@media (max-width: 688px) {
+  .chat-ui.visible {
+    width: 90%;
+  }
 }

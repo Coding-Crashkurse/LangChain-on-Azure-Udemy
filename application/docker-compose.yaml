@@ -1,12 +1,5 @@
 version: "3"
 services:
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-
   postgres:
     build: ./postgres
     ports:
@@ -31,7 +24,3 @@ services:
     build: ./frontend
     ports:
       - "3000:3000"
-
-volumes:
-  redis_data:
-  redis2_data:

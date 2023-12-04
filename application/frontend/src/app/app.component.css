@@ -1,33 +1,30 @@
 .food-card-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Start with 4 columns */
-  grid-gap: 20px; /* This sets both the grid-row-gap and grid-column-gap */
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
   padding: 20px;
   justify-items: center;
 }
 
-/* Media query for mobile phones (adjust the max-width as needed) */
 @media (max-width: 900px) {
   .food-card-container {
-    grid-template-columns: repeat(2, 1fr); /* Start with 4 columns */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Media query for mobile phones (adjust the max-width as needed) */
 @media (max-width: 688px) {
   .food-card-container {
-    grid-template-columns: 1fr; /* Single column for mobile phones */
+    grid-template-columns: 1fr;
   }
 }
 
 .instructions-wrapper {
   display: flex;
-  justify-content: center; /* Center horizontally */
-  margin: 4rem 0; /* Top margin */
+  justify-content: center;
+  margin: 4rem 0;
 }
 
 .chatbot-instructions-container {
-  /* Your existing styles */
-  max-width: 600px; /* Adjust the max width as needed */
-  margin: 0 auto; /* Center in the wrapping flexbox */
+  max-width: 600px;
+  margin: 0 auto;
 }
