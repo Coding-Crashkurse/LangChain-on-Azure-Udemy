@@ -108,9 +108,11 @@ app.add_middleware(
 
 @app.post("/conversation")
 async def ask_question(question: str, conversation: Conversation) -> dict:
-    history_formatted = format_history(conversation)
-    answer = rag_chain.invoke({"question": question, "history": history_formatted})
-    return {"answer": answer}
+    print(question)
+    print("CONVERSATION", conversation)
+    # history_formatted = format_history(conversation)
+    # answer = rag_chain.invoke({"question": question, "history": history_formatted})
+    # return {"answer": answer}
 
 
 @app.post("/uploadfiles/")
