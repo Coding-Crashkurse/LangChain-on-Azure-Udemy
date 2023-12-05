@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
+  production: false,
   backendHost: 'http://localhost:5000/conversation',
 };

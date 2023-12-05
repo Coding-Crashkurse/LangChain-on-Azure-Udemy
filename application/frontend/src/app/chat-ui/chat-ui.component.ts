@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 interface ChatMessage {
   text: string;
@@ -35,18 +36,19 @@ export class ChatUiComponent implements OnInit {
   }
 
   sendMessageToApi(newMessage: string, conversation: ChatMessage[]): void {
-    const backendHost = process.env['BACKEND_HOST'] || 'localhost';
-    const apiUrl = `http://${backendHost}:8000/conversation`;
-    this.http
-      .post<any>(apiUrl, {
-        question: newMessage,
-        conversation: conversation.map((msg) => ({
-          role: msg.sender,
-          content: msg.text,
-        })),
-      })
-      .subscribe((response) => {
-        this.messages.push({ text: response.response, sender: 'bot' });
-      });
+    const apiUrl = environment.backendHost;
+    const payload = {
+      question: newMessage,
+      conversation: conversation.map((msg) => ({
+        role: msg.sender,
+        content: msg.text,
+      })),
+    };
+
+    console.log('Sending to API:', payload);
+
+    this.http.post<any>(apiUrl, payload).subscribe((response) => {
+      this.messages.push({ text: response.answer, sender: 'bot' });
+    });
   }
 }

@@ -8,7 +8,7 @@ RUN npm install
 COPY . /app
 
 # Build the project
-RUN npm run build
+RUN npm run build --configuration=prod
 
 # Stage 2: Production stage
 FROM nginx:alpine
