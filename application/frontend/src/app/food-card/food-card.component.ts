@@ -5,6 +5,7 @@ import { Food } from './food.models';
   selector: 'app-food-card',
   templateUrl: './food-card.component.html',
   styleUrls: ['./food-card.component.css'],
+  standalone: true,
 })
 export class FoodCardComponent {
   @Input() food!: Food;

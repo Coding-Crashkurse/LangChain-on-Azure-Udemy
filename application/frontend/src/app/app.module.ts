@@ -6,19 +6,9 @@ import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ChatUiComponent } from './chat-ui/chat-ui.component';
-import { FoodCardComponent } from './food-card/food-card.component';
-import { HeaderComponent } from './header/header.component';
-import { ChatbotInstructionsComponent } from './chatbot-instructions/chatbot-instructions.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ChatUiComponent,
-    FoodCardComponent,
-    HeaderComponent,
-    ChatbotInstructionsComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     HttpClientModule,
     BrowserModule,

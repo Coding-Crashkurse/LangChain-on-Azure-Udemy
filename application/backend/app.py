@@ -1,36 +1,19 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from dotenv import load_dotenv, find_dotenv
-from langchain.chat_models import ChatOpenAI
-from fastapi.middleware.cors import CORSMiddleware
-from langchain.prompts import PromptTemplate
 import logging
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores.pgvector import PGVector
-from langchain.schema import StrOutputParser
-from langchain.schema.runnable import RunnablePassthrough
-from fastapi import FastAPI, UploadFile, File
-from azure.storage.blob import BlobServiceClient
 import os
-from fastapi import FastAPI, HTTPException
-from langchain.schema import Document
-from langchain.indexes import SQLRecordManager, index
-import os
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts import PromptTemplate
 from operator import itemgetter
+
+from azure.storage.blob import BlobServiceClient
+from dotenv import find_dotenv, load_dotenv
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+from langchain.chat_models import ChatOpenAI
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.indexes import SQLRecordManager, index
+from langchain.prompts import ChatPromptTemplate, PromptTemplate
+from langchain.schema import Document, StrOutputParser, format_document
+from langchain.schema.runnable import RunnableParallel, RunnablePassthrough
 from langchain.vectorstores.pgvector import PGVector
-from langchain.schema import StrOutputParser
-from langchain.schema.runnable import RunnablePassthrough
-from langchain.indexes import SQLRecordManager
-from langchain.chains import RetrievalQA
-from langchain.schema import format_document
-from langchain.schema.runnable import RunnableParallel
-from langchain.prompts import ChatPromptTemplate
-
-
-from langchain.schema import Document
+from pydantic import BaseModel, Field
 
 load_dotenv(find_dotenv())
 
@@ -71,16 +54,20 @@ class Conversation(BaseModel):
     conversation: list[Message]
 
 
+class DocumentIn(BaseModel):
+    page_content: str
+    metadata: dict = Field(default_factory=dict)
+
+
 def _format_chat_history(conversation: list[Message]) -> str:
     formatted_history = ""
     for message in conversation:
         formatted_history += f"{message.role}: {message.content}\n"
     return formatted_history.rstrip()
 
+
 def format_docs(docs: list) -> str:
     return "\n\n".join(doc.page_content for doc in docs)
-
-
 
 
 embeddings = OpenAIEmbeddings()
@@ -94,9 +81,6 @@ retriever = store.as_retriever()
 
 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
-
-
-# Define the templates
 condense_question_template = """Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question, in its original language.
 Chat History:
 {chat_history}
@@ -114,11 +98,13 @@ ANSWER_PROMPT = ChatPromptTemplate.from_template(answer_template)
 
 DEFAULT_DOCUMENT_PROMPT = PromptTemplate.from_template(template="{page_content}")
 
+
 def _combine_documents(
     docs, document_prompt=DEFAULT_DOCUMENT_PROMPT, document_separator="\n\n"
 ):
     doc_strings = [format_document(doc, document_prompt) for doc in docs]
     return document_separator.join(doc_strings)
+
 
 _inputs = RunnableParallel(
     standalone_question=RunnablePassthrough.assign(
@@ -133,7 +119,9 @@ _context = {
     "context": itemgetter("standalone_question") | retriever | _combine_documents,
     "question": lambda x: x["standalone_question"],
 }
-conversational_qa_chain = _inputs | _context | ANSWER_PROMPT | ChatOpenAI() | StrOutputParser()
+conversational_qa_chain = (
+    _inputs | _context | ANSWER_PROMPT | ChatOpenAI() | StrOutputParser()
+)
 
 
 app = FastAPI()
@@ -146,16 +134,11 @@ app.add_middleware(
 )
 
 
-from fastapi import Request
-import json
-
-
 @app.post("/conversation")
 async def ask_question(question: str, conversation: Conversation) -> dict:
-    print(f"Received Question: {question}")
-    print(f"Received Conversation: {conversation}")
-
-    answer = conversational_qa_chain.invoke({"question": question, "chat_history": conversation.conversation})
+    answer = conversational_qa_chain.invoke(
+        {"question": question, "chat_history": conversation.conversation}
+    )
     print(answer)
     return {"answer": answer}
 
@@ -174,25 +157,15 @@ async def upload_files(files: list[UploadFile] = File(...)):
 
     return {"uploaded_files": uploaded_files}
 
-from pydantic import BaseModel, Field
-from typing import Dict, List
-
-class DocumentIn(BaseModel):
-    page_content: str
-    metadata: Dict = Field(default_factory=dict)
-
-
-from fastapi import HTTPException
-from langchain.schema import Document  # Import the Langchain Document class
 
 @app.post("/index_documents/")
-async def index_documents(documents_in: List[DocumentIn]):
+async def index_documents(documents_in: list[DocumentIn]):
     print(documents_in)
     try:
-        # Convert Pydantic objects to Langchain Document objects
-        documents = [Document(page_content=doc.page_content, metadata=doc.metadata) for doc in documents_in]
-
-        # Proceed with indexing using Langchain Document objects
+        documents = [
+            Document(page_content=doc.page_content, metadata=doc.metadata)
+            for doc in documents_in
+        ]
         result = index(
             documents,
             record_manager,
@@ -203,9 +176,3 @@ async def index_documents(documents_in: List[DocumentIn]):
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/index_documents_test/")
-async def index_documents(request: Request):
-    raw_data = await request.json()  # Get raw JSON data
-    print(raw_data)  # Log it for debugging

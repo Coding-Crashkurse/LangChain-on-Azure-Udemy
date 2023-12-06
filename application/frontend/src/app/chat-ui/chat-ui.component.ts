@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 interface ChatMessage {
   text: string;
@@ -11,6 +13,8 @@ interface ChatMessage {
   selector: 'app-chat-ui',
   templateUrl: './chat-ui.component.html',
   styleUrls: ['./chat-ui.component.css'],
+  standalone: true,
+  imports: [FormsModule, CommonModule],
 })
 export class ChatUiComponent implements OnInit {
   public isVisible: boolean = false;
@@ -36,9 +40,10 @@ export class ChatUiComponent implements OnInit {
   }
 
   sendMessageToApi(newMessage: string, conversation: ChatMessage[]): void {
-    const apiUrl = environment.backendHost;
+    const apiUrl = `${
+      environment.backendHost
+    }/conversation?question=${encodeURIComponent(newMessage)}`;
     const payload = {
-      question: newMessage,
       conversation: conversation.map((msg) => ({
         role: msg.sender,
         content: msg.text,
