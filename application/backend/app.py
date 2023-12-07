@@ -142,6 +142,33 @@ async def ask_question(question: str, conversation: Conversation) -> dict:
     print(answer)
     return {"answer": answer}
 
+@app.get("/listfiles")
+async def list_files(page: int = 1, page_size: int = 10):
+    container_client = blob_service_client.get_container_client(container_name)
+    blob_list = container_client.list_blobs()
+    files = [blob.name for blob in blob_list]
+    total_files = len(files)
+    start = (page - 1) * page_size
+    end = start + page_size
+    return {
+        "total_files": total_files,
+        "files": files[start:end],
+        "page": page,
+        "total_pages": (total_files - 1) // page_size + 1,
+    }
+
+
+@app.delete("/deletefile/{filename}")
+async def delete_file(filename: str):
+    container_client = blob_service_client.get_container_client(container_name)
+    blob_client = container_client.get_blob_client(blob=filename)
+
+    try:
+        blob_client.delete_blob()
+        return {"message": f"File {filename} deleted successfully"}
+    except Exception as e:
+        return {"error": str(e)}
+
 
 @app.post("/uploadfiles/")
 async def upload_files(files: list[UploadFile] = File(...)):
