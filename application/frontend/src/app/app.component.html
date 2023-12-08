@@ -1,1 +1,10 @@
-<router-outlet></router-outlet>
+<app-header></app-header>
+<app-chat-ui></app-chat-ui>
+<div class="instructions-wrapper">
+    <app-chatbot-instructions></app-chatbot-instructions>
+</div>
+
+<!-- Add this section to display food cards -->
+<div class="food-card-container">
+    <app-food-card *ngFor="let food of foods" [food]="food"></app-food-card>
+</div>

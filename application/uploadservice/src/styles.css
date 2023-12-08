@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
+
+/* CSS Reset */
+html,
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+body {
+  line-height: 1;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+body {
+  font-family: "Playfair Display", serif;
+  min-height: 100vh;
+  width: 100%;
+  position: relative; /* Wichtig für die Positionierung des Pseudo-Elements */
+  margin: 0; /* Entfernt standardmäßige Browser-Margins */
+  font-weight: 700;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/assets/upload.png");
+  background-size: cover; /* Stellt sicher, dass der Hintergrund das gesamte Element bedeckt */
+  background-position: center; /* Zentriert das Bild */
+  background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+  filter: grayscale(70%); /* Wendet den Graufilter an */
+  z-index: -1; /* Stellt sicher, dass das Bild hinter dem Inhalt liegt */
+}

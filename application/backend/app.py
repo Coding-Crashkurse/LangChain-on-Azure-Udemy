@@ -14,6 +14,9 @@ from langchain.schema import Document, StrOutputParser, format_document
 from langchain.schema.runnable import RunnableParallel, RunnablePassthrough
 from langchain.vectorstores.pgvector import PGVector
 from pydantic import BaseModel, Field
+from sqlalchemy import create_engine
+from sqlalchemy.sql import text
+
 
 load_dotenv(find_dotenv())
 
@@ -27,7 +30,7 @@ blob_service_client = BlobServiceClient.from_connection_string(conn_str=conn_str
 host = os.getenv("PG_VECTOR_HOST")
 user = os.getenv("PG_VECTOR_USER")
 password = os.getenv("PG_VECTOR_PASSWORD")
-COLLECTION_NAME = os.getenv("PG_COLLECTION_NAME")
+COLLECTION_NAME = os.getenv("PGDATABASE")
 CONNECTION_STRING = (
     f"postgresql+psycopg2://{user}:{password}@{host}:5432/{COLLECTION_NAME}"
 )
@@ -132,6 +135,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+def get_row_count():
+    engine = create_engine(CONNECTION_STRING)
+    with engine.connect() as connection:
+        result = connection.execute(text("SELECT COUNT(*) FROM langchain_pg_collection"))
+        row_count = result.scalar()
+    return row_count
+
+@app.get("/row_count")
+async def row_count():
+    try:
+        count = get_row_count()
+        return {"row_count": count}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 
 @app.post("/conversation")

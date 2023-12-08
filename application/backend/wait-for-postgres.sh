@@ -3,14 +3,20 @@
 
 set -e
 
-host="$1"
-shift
-cmd="$@"
+# Fetch the host and port from the environment variables
+host="$PG_VECTOR_HOST"
+port="$PGPORT"
+user="$PG_VECTOR_USER"
+dbname="$PGDATABASE"
+password="$PG_VECTOR_PASSWORD"
 
-until PGPASSWORD=admin psql -h postgres -U admin -d vectordb -c '\q'; do
+# Wait for PostgreSQL to become available
+until PGPASSWORD=$password psql -h "$host" -U "$user" -d "$dbname" -p "$port" -c '\q'; do
   >&2 echo "Postgres is unavailable - sleeping"
   sleep 1
 done
 
 >&2 echo "Postgres is up - executing command"
-exec $cmd
+
+# Now we can execute the CMD passed to the Docker container
+exec "$@"
