@@ -2,4 +2,5 @@ azure-search-documents==11.4.0b8
 tiktoken==0.5.1
 azure-identity==1.15.0
 azure-storage-blob==12.18.3
-psycopg2-binary
+psycopg2-binary==2.9.9
+unstructured==0.11.6
