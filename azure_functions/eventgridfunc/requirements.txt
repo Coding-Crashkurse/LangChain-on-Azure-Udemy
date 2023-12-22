@@ -1,0 +1,6 @@
+azure-functions
+requests
+azure-storage-blob
+# Add the specific version of langchain if available, or just the package name if the latest version is needed
+langchain
+unstructured

@@ -1,26 +1,39 @@
-# Stage 1: Base stage with Node.js 18
-FROM node:18 as build-stage
-WORKDIR /app
-COPY package*.json /app/
-RUN npm install
+# Stage 1: Base stage with Node.js 18 for building frontend assets
+FROM node:18-buster-slim as build-stage
 
-# Copy the rest of the files
+WORKDIR /app
+
+# Copy package.json and yarn.lock files
+COPY package.json yarn.lock /app/
+
+# Install dependencies
+RUN yarn install --frozen-lockfile
+
+# Copy the rest of your frontend application
 COPY . /app
 
-# Build the project
-RUN npm run build --configuration=prod
+# Build the application
+RUN yarn build
 
-# Stage 2: Production stage
-FROM nginx:alpine
 
-# Copy custom Nginx configuration
-COPY default.conf /etc/nginx/conf.d/default.conf
+# Stage 2: Production stage for FastAPI application
+FROM python:3.11-slim-buster
 
-# Copy built assets from build-stage
-COPY --from=build-stage /app/dist/uploadservice /usr/share/nginx/html
+# Set working directory
+WORKDIR /app
 
-# Expose port 4000
+# Install Python dependencies
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy built frontend assets from build-stage
+COPY --from=build-stage /app/dist/uploadservice /app/dist/uploadservice
+
+# Copy the FastAPI application files
+COPY . /app
+
+# Expose the port FastAPI will run on
 EXPOSE 4000
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start the FastAPI application
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "4000"]
