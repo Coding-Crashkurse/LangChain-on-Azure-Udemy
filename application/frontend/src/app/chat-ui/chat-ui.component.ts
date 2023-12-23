@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 interface ChatMessage {
   text: string;
   sender: 'bot' | 'user';
+  isLoading?: boolean; // Optional property for loading state
 }
 
 @Component({
@@ -33,26 +34,30 @@ export class ChatUiComponent implements OnInit {
 
   sendUserMessage(): void {
     if (this.newMessage.trim()) {
+      // Add user's message to the chat
       this.messages.push({ text: this.newMessage, sender: 'user' });
-      this.sendMessageToApi(this.newMessage, this.messages);
+
+      // Add a loading indicator for bot's response
+      this.messages.push({ text: '', sender: 'bot', isLoading: true });
+
+      // Send message to API
+      this.sendMessageToApi(this.newMessage);
       this.newMessage = '';
     }
   }
 
-  sendMessageToApi(newMessage: string, conversation: ChatMessage[]): void {
-    const apiUrl = `${
-      environment.backendHost
-    }/conversation?question=${encodeURIComponent(newMessage)}`;
+  sendMessageToApi(newMessage: string): void {
+    const apiUrl = `${environment.backendHost}/conversation`;
+    const params = new HttpParams().set('question', newMessage);
     const payload = {
-      conversation: conversation.map((msg) => ({
+      conversation: this.messages.map((msg) => ({
         role: msg.sender,
         content: msg.text,
       })),
     };
 
-    console.log('Sending to API:', payload);
-
-    this.http.post<any>(apiUrl, payload).subscribe((response) => {
+    this.http.post<any>(apiUrl, payload, { params }).subscribe((response) => {
+      this.messages.pop(); // Remove the loading indicator
       this.messages.push({ text: response.answer, sender: 'bot' });
     });
   }

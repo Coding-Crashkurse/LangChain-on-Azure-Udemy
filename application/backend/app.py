@@ -86,6 +86,9 @@ CONDENSE_QUESTION_PROMPT = PromptTemplate.from_template(condense_question_templa
 
 answer_template = """Answer the question based only on the following context:
 {context}
+
+If you don´t find the answer in the context, tell the user that you are happy to help with different questions about La Tavola Calda
+
 Question: {question}
 """
 ANSWER_PROMPT = ChatPromptTemplate.from_template(answer_template)

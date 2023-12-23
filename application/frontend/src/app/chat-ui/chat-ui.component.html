@@ -6,20 +6,26 @@
             <button class="close-btn" (click)="toggleChat()">Close</button>
         </div>
         <div class="chat-body">
-            <div *ngFor="let message of messages; let i = index" class="message"
-                [class.user-message]="message.sender === 'user'" [class.bot-message]="message.sender === 'bot'">
+            <!-- Chat Messages -->
+            <div *ngFor="let message of messages" class="message" [class.user-message]="message.sender === 'user'"
+                [class.bot-message]="message.sender === 'bot'">
                 <img *ngIf="message.sender === 'bot'" src="/assets/robot.png" alt="Bot" class="message-icon">
                 <img *ngIf="message.sender === 'user'" src="/assets/user.png" alt="User" class="message-icon">
-                <div class="message-text">{{ message.text }}</div>
+                <div *ngIf="!message.isLoading" class="message-text">{{ message.text }}</div>
+                <!-- Loading Indicator -->
+                <div *ngIf="message.isLoading" class="loading-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
             </div>
         </div>
         <div class="chat-input">
-            <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendUserMessage(); newMessage = ''"
+            <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendUserMessage()"
                 placeholder="Type a message...">
-            <button (click)="sendUserMessage(); newMessage = ''">Send</button>
+            <button (click)="sendUserMessage()">Send</button>
         </div>
     </div>
-
     <button (click)="toggleChat()" class="open-chat-btn" *ngIf="!isVisible">
         <img src="/assets/robot.png" alt="Open Chat">
     </button>
