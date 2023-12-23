@@ -15,10 +15,9 @@ from langchain.schema.runnable import RunnableParallel, RunnablePassthrough
 from langchain.vectorstores.pgvector import PGVector
 from pydantic import BaseModel, Field
 from sqlalchemy import create_engine
-from starlette.requests import Request
 from sqlalchemy.sql import text
 from starlette.middleware.base import BaseHTTPMiddleware
-
+from starlette.requests import Request
 
 load_dotenv(find_dotenv())
 
@@ -75,6 +74,7 @@ def _format_chat_history(conversation: list[Message]) -> str:
 def format_docs(docs: list) -> str:
     return "\n\n".join(doc.page_content for doc in docs)
 
+
 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
 condense_question_template = """Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question, in its original language.
@@ -93,17 +93,19 @@ Question: {question}
 """
 ANSWER_PROMPT = ChatPromptTemplate.from_template(answer_template)
 
+
 def _format_chat_history(conversation):
     formatted_history = []
     for message in conversation:
-        if message.role == 'user':
+        if message.role == "user":
             formatted_history.append(f"Human: {message.content}")
-        elif message.role == 'assistant':
+        elif message.role == "assistant":
             formatted_history.append(f"Assistant: {message.content}")
     return "\n".join(formatted_history)
 
 
 DEFAULT_DOCUMENT_PROMPT = PromptTemplate.from_template(template="{page_content}")
+
 
 def _combine_documents(
     docs, document_prompt=DEFAULT_DOCUMENT_PROMPT, document_separator="\n\n"
@@ -111,6 +113,7 @@ def _combine_documents(
     doc_strings = [format_document(doc, document_prompt) for doc in docs]
     logger.info(f"Docstrings: {doc_strings}")
     return document_separator.join(doc_strings)
+
 
 _inputs = RunnableParallel(
     standalone_question=RunnablePassthrough.assign(
@@ -125,7 +128,10 @@ _context = {
     "context": itemgetter("standalone_question") | retriever | _combine_documents,
     "question": lambda x: x["standalone_question"],
 }
-conversational_qa_chain = _inputs | _context | ANSWER_PROMPT | ChatOpenAI() | StrOutputParser()
+conversational_qa_chain = (
+    _inputs | _context | ANSWER_PROMPT | ChatOpenAI() | StrOutputParser()
+)
+
 
 class LogIPMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
@@ -145,9 +151,11 @@ app.add_middleware(
 )
 app.add_middleware(LogIPMiddleware)
 
+
 @app.get("/test")
 async def test():
     return {"test": "works"}
+
 
 def get_row_count():
     engine = create_engine(CONNECTION_STRING)
@@ -155,6 +163,7 @@ def get_row_count():
         result = connection.execute(text("SELECT COUNT(*) FROM langchain_pg_embedding"))
         row_count = result.scalar()
     return row_count
+
 
 @app.get("/row_count")
 async def row_count():
@@ -164,12 +173,14 @@ async def row_count():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.post("/conversation")
 async def ask_question(question: str, conversation: Conversation) -> dict:
     answer = conversational_qa_chain.invoke(
         {"question": question, "chat_history": conversation.conversation}
     )
     return {"answer": answer}
+
 
 @app.get("/listfiles")
 async def list_files(page: int = 1, page_size: int = 10):
