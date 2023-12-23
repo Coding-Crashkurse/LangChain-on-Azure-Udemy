@@ -2,7 +2,7 @@ import requests
 from langchain.document_loaders import DirectoryLoader, TextLoader
 from langchain.text_splitter import CharacterTextSplitter
 
-loader = DirectoryLoader("./hotels", glob="**/*.txt", loader_cls=TextLoader)
+loader = DirectoryLoader("./restaurant", glob="**/*.txt", loader_cls=TextLoader)
 data = loader.load()
 text_splitter = CharacterTextSplitter(chunk_size=150, chunk_overlap=20)
 docs = text_splitter.split_documents(data)

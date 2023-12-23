@@ -1,0 +1,136 @@
+.outer-wrapper {
+  display: block;
+  width: 100%;
+  margin: auto;
+  height: 100vh;
+  color: white;
+}
+
+.drop-zone {
+  border: 2px dashed #007bff;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 10px;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: pointer;
+}
+
+.drop-zone:hover {
+  background-color: #e2e6ea;
+}
+
+.drop-zone input[type="file"] {
+  display: none;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.success {
+  background-color: green;
+}
+
+.image {
+  background-color: red;
+}
+
+.space {
+  color: white;
+  padding: 8px 0;
+  margin-bottom: 20px;
+  font-size: 32px;
+}
+
+.upload-wrapper {
+  width: 80%;
+  max-width: 700px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding-top: 30px;
+  text-align: center;
+}
+
+.file-list-container {
+  width: 80%;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: rgba(24, 24, 24, 0.7);
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+.file-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ffffff;
+}
+
+.file-list-table thead {
+  font-weight: bold;
+  text-align: left;
+  border-bottom: 2px solid #ffffff;
+}
+
+.file-list-table td,
+.file-list-table th {
+  padding: 10px;
+  border-bottom: 1px solid #ffffff;
+}
+
+.delete-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: darkred;
+}
+
+.pagination-nav {
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  border-radius: 0.25rem;
+}
+
+.page-item {
+  display: inline;
+}
+
+.page-link {
+  color: #ff0073;
+  padding: 0.5rem 0.75rem;
+}
+
+.page-item.active .page-link {
+  color: white;
+  background-color: #ff0073;
+  border-color: #ff0055;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: white;
+  border-color: #dee2e6;
+}

@@ -2,4 +2,4 @@
 .python_packages
 **/.env
 **/__pycache__
-app
+myapp

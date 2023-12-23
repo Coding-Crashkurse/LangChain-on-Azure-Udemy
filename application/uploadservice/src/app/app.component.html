@@ -1,0 +1,44 @@
+<!-- admin.component.html -->
+<div class="outer-wrapper">
+  <div class="upload-wrapper" [ngClass]="{'image': isImage}">
+    <h1 class="space">File Upload</h1>
+    <div class="drop-zone" (drop)="onDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)">
+      Drag files here or click to select files
+      <input type="file" id="fileUpload" (change)="onFileSelect($event)" multiple hidden>
+      <button *ngIf="files.length > 0 && !isImage" (click)="uploadFiles()">Upload Files</button>
+    </div>
+  </div>
+
+  <div class="file-list-container" *ngIf="displayedFiles.length > 0">
+    <!-- File table -->
+    <table class="file-list-table">
+      <thead>
+        <tr>
+          <th>Filename</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let file of displayedFiles">
+          <td>{{ file }}</td>
+          <td><button class="delete-btn" (click)="deleteFile(file)">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination controls -->
+    <nav *ngIf="totalPages > 1" class="pagination-nav">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let page of pages" [class.active]="currentPage === page">
+          <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

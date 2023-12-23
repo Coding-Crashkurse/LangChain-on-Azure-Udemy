@@ -1,31 +1,19 @@
-1. Storage Account erstellen
-   1.1. Container mit Namen "data" erstellen
+# LangChain on Azure - Udemy Course
 
-2. Azure Database for PostgreSQL flexible server erstellen
-   2.1. User und passwort einrichten
-   2.2. PGVector Extension aktivieren
-   2.3. vectordb database hinzufügen
+## Course Overview
 
-3. Container Registry erstellen
-   3.1. Admin User aktivieren
+This course offers a comprehensive guide on building an event-driven AI application using LangChain, focusing on frontend, backend, and microservice architecture. It explores various Azure resources and demonstrates their integration and application in a real-world scenario.
 
-4. App Services App erstellen
-   4.1 App erstellen - Zeigen, dass App nicht erreichbar
-   4.2 Environment Variablen zeigen -> WEBSITE_PORT hinzufügen für Access
+## Key Azure Resources Utilized:
 
-5. Uploadservice bauen und hochladen
-   5.1 Im src folder environment anpassen mit URL des backend services
+- Azure Cognitive Search
+- Azure Database for PostgreSQL Flexible Server
+- Blob Storage
+- Container Registries
+- Function App
+- Event Grid
+- App Service
 
-Erklären, dass wir nun Verbindung haben zu
+## Get This Course
 
-6. Function erstellen
-   6.1 Environment Variablen anlegen
-
-func new --template "EventGridTrigger"
-func azure functionapp publish indexingfunctionudemy
-
-7. Frontend App übernehmen
-   7.1. Im src folder environment anpassen mit URL des backend services
-   7.2. Bauen und in Registry schieben
-
-8. IPs einschränken
+For more details and to enroll in the course, visit [Udemy](your-course-link-here).
