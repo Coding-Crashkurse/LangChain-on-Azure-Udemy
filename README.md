@@ -16,4 +16,4 @@ This course offers a comprehensive guide on building an event-driven AI applicat
 
 ## Get This Course
 
-For more details and to enroll in the course, visit [Udemy](your-course-link-here).
+For more details and to enroll in the course, visit [Udemy](https://www.udemy.com/course/langchain-on-azure-building-scalable-llm-applications).
