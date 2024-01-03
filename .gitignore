@@ -1,0 +1,5 @@
+.vscode
+.python_packages
+**/.env
+**/__pycache__
+myapp
