@@ -1,11 +1,11 @@
-docker build -t <registryname>.azurecr.io/backend:latest ./backend
-docker build -t <registryname>.azurecr.io/frontend:latest ./frontend
-docker build -t <registryname>.azurecr.io/uploadservice:latest ./uploadservice
+docker build -t udemyserviceregistry.azurecr.io/backend:latest ./backend
+docker build -t udemyserviceregistry.azurecr.io/frontend:latest ./frontend
+docker build -t udemyserviceregistry.azurecr.io/uploadservice:latest ./uploadservice
 
-az acr login --name <registryname>
+az acr login --name udemyserviceregistry
 
-docker push <registryname>.azurecr.io/backend:latest
-docker push <registryname>.azurecr.io/frontend:latest
-docker push <registryname>.azurecr.io/uploadservice:latest
+docker push udemyserviceregistry.azurecr.io/backend:latest
+docker push udemyserviceregistry.azurecr.io/frontend:latest
+docker push udemyserviceregistry.azurecr.io/uploadservice:latest
 
-az acr repository list --name <registryname> --output table
+az acr repository list --name udemyserviceregistry --output table

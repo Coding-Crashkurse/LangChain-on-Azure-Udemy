@@ -71,10 +71,6 @@ def _format_chat_history(conversation: list[Message]) -> str:
     return formatted_history.rstrip()
 
 
-def format_docs(docs: list) -> str:
-    return "\n\n".join(doc.page_content for doc in docs)
-
-
 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
 condense_question_template = """Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question, in its original language.
@@ -92,16 +88,6 @@ If you don´t find the answer in the context, tell the user that you are happy t
 Question: {question}
 """
 ANSWER_PROMPT = ChatPromptTemplate.from_template(answer_template)
-
-
-def _format_chat_history(conversation):
-    formatted_history = []
-    for message in conversation:
-        if message.role == "user":
-            formatted_history.append(f"Human: {message.content}")
-        elif message.role == "assistant":
-            formatted_history.append(f"Assistant: {message.content}")
-    return "\n".join(formatted_history)
 
 
 DEFAULT_DOCUMENT_PROMPT = PromptTemplate.from_template(template="{page_content}")
@@ -128,18 +114,7 @@ _context = {
     "context": itemgetter("standalone_question") | retriever | _combine_documents,
     "question": lambda x: x["standalone_question"],
 }
-conversational_qa_chain = (
-    _inputs | _context | ANSWER_PROMPT | ChatOpenAI() | StrOutputParser()
-)
-
-
-class LogIPMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        client_host = request.client.host
-        logger.info(f"Requester's IP: {client_host}")
-        response = await call_next(request)
-        return response
-
+conversational_qa_chain = _inputs | _context | ANSWER_PROMPT | llm | StrOutputParser()
 
 app = FastAPI()
 app.add_middleware(
@@ -149,7 +124,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_middleware(LogIPMiddleware)
 
 
 @app.get("/test")

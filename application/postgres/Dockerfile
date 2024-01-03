@@ -9,4 +9,3 @@ RUN wget https://github.com/pgvector/pgvector/archive/v0.4.4.tar.gz && \
     make && \
     make install
 
-COPY ./init.sql /docker-entrypoint-initdb.d/
