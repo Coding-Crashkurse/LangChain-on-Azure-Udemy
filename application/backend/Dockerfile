@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir fastapi uvicorn redis requests openai tiktoken langchain typing_extensions python-dotenv python-multipart psycopg2-binary azure-storage-blob pgvector
+RUN pip install --no-cache-dir fastapi uvicorn redis requests openai tiktoken langchain langchain_openai typing_extensions python-dotenv python-multipart psycopg2-binary azure-storage-blob pgvector
 
 # Install PostgreSQL client
 RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
