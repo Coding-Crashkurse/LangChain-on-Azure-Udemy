@@ -1,6 +1,6 @@
 import requests
 from langchain.document_loaders import DirectoryLoader, TextLoader
-from langchain.text_splitter import CharacterTextSplitter
+from langchain_text_splitters  import CharacterTextSplitter
 
 loader = DirectoryLoader("./restaurant", glob="**/*.txt", loader_cls=TextLoader)
 data = loader.load()
