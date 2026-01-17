@@ -8,11 +8,12 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_openai import ChatOpenAI
 from langchain_openai import OpenAIEmbeddings
-from langchain.indexes import SQLRecordManager, index
-from langchain.prompts import ChatPromptTemplate, PromptTemplate
-from langchain.schema import Document, StrOutputParser, format_document
-from langchain.schema.runnable import RunnableParallel, RunnablePassthrough
-from langchain.vectorstores.pgvector import PGVector
+from langchain_classic.indexes import SQLRecordManager, index
+from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, format_document
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.documents import Document
+from langchain_core.runnables import RunnablePassthrough, RunnableParallel
+from langchain_postgres import PGVector
 from pydantic import BaseModel, Field
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text

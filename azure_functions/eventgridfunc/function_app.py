@@ -4,7 +4,7 @@ import requests
 import azure.functions as func
 from azure.storage.blob import BlobServiceClient
 from langchain_community.document_loaders import AzureBlobStorageContainerLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 app = func.FunctionApp()
 
